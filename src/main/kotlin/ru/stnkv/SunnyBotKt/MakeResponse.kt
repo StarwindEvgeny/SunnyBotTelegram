@@ -22,7 +22,7 @@ open class MakeResponse {
             "Такой как: <b>схемы, статьи, мануалы, информация для диагностики, расшифровки ошибок, расходники для ТО и много другое!</b>"
 
     //Новое сообщение
-     fun getNewMessage(userID: String): SendPhoto {
+     open fun getNewMessage(userID: String): SendPhoto {
         val message = SendPhoto()
 
         message.chatId = userID

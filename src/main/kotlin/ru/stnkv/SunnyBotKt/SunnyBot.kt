@@ -1,8 +1,6 @@
 package ru.stnkv.SunnyBotKt
 
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
@@ -56,6 +54,7 @@ import ru.stnkv.SunnyBotKt.MessageCat.Elctric.Fuses.RestOutside
 import ru.stnkv.SunnyBotKt.MessageCat.Elctric.Fuses.RestRele
 import ru.stnkv.SunnyBotKt.MessageCat.Elctric.Lams.Lamps
 import ru.stnkv.SunnyBotKt.MessageCat.Manual.Manual
+import ru.stnkv.SunnyBotKt.MessageCat.Other.Offense
 import ru.stnkv.SunnyBotKt.MessageCat.StartMessage.StartMessage
 import ru.stnkv.SunnyBotKt.MessageCat.TO.AT.AT
 import ru.stnkv.SunnyBotKt.MessageCat.TO.Brake.Brake
@@ -84,7 +83,7 @@ class SunnyBot(
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onUpdateReceived(update: Update) {
-        GlobalScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             updateHandler(update)
         }
     }
@@ -172,6 +171,9 @@ class SunnyBot(
             } else if (text.uppercase().contains("КАКАЯ ЛАМПА") || text.uppercase().contains("КАКАЯ ЛАМПОЧКА")
                 || text.uppercase().contains("КАКИЕ ЛАМПЫ") || text.uppercase().contains("КАКИЕ ЛАМПОЧКИ")) {
                 val response = Lamps()
+                sendPhoto(response.getNewMessage(userID))
+            } else if (text.uppercase().contains("ИДИ НАХУЙ")) {
+                val response = Offense()
                 sendPhoto(response.getNewMessage(userID))
             }
 
