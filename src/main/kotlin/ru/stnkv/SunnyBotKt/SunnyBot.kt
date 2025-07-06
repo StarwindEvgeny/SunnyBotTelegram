@@ -86,6 +86,10 @@ class SunnyBot(
         CoroutineScope(Dispatchers.IO).launch {
             updateHandler(update)
         }
+        CoroutineScope(Dispatchers.IO).launch {
+            val dataBaseUsers = DataBaseUsers()
+            dataBaseUsers.dataBaseHelper(update)
+        }
     }
 
     // Основная логика
