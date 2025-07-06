@@ -18,7 +18,7 @@ class DataBaseUsers {
     @Value("\${database.columnName}")
     val columnName = ""
 
-    suspend fun dataBaseHelper(update: Update) {
+    fun dataBaseHelper(update: Update) {
         val userID = update.message.chatId.toString()
         val userName: String? = update.message.chat.userName
         val firstName: String? = update.message.chat.firstName
