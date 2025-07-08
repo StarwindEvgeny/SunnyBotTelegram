@@ -102,10 +102,6 @@ class SunnyBot(
         CoroutineScope(Dispatchers.IO).launch {
             updateHandler(update)
         }
-        CoroutineScope(Dispatchers.IO).launch {
-            val dataBase = DataBaseUsers(url, login, password, tableName, columnName)
-            dataBase.dataBaseHelper(update)
-        }
     }
 
     // Основная логика
@@ -121,8 +117,13 @@ class SunnyBot(
                 val response = StartMessage()
                 sendPhoto(response.getNewMessage(userID))
             }
-            //Сообщения вне чатов
+            //Сообщения вне чатов и проверка в базе данных
             if (!userID.contains("-")) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val dataBase = DataBaseUsers(url, login, password, tableName, columnName)
+                    dataBase.dataBaseHelper(update)
+                }
+
                 if (text.uppercase().contains("ЧАТ")) {
                     val response = ChatNSK()
                     sendPhoto(response.getNewMessage(userID))
