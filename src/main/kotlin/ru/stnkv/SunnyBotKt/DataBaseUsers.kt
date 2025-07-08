@@ -1,22 +1,16 @@
 package ru.stnkv.SunnyBotKt
 
-import org.springframework.beans.factory.annotation.Value
 import org.telegram.telegrambots.meta.api.objects.Update
 import java.sql.Connection
 import java.sql.DriverManager
 
-class DataBaseUsers {
-
-    @Value("\${database.url}")
-    val url = ""
-    @Value("\${database.login}")
-    val login = ""
-    @Value("\${database.password}")
-    val password = ""
-    @Value("\${database.tableName}")
-    val tableName = ""
-    @Value("\${database.columnName}")
-    val columnName = ""
+class DataBaseUsers(
+    private val urlBase: String = "",
+    private val login: String = "",
+    private val password: String = "",
+    private val tableName: String = "",
+    private val columnName: String = "",
+) {
 
     fun dataBaseHelper(update: Update) {
         val userID = update.message.chatId.toString()
@@ -24,7 +18,8 @@ class DataBaseUsers {
         val firstName: String? = update.message.chat.firstName
 
         try {
-            val connection: Connection = DriverManager.getConnection(url, login, password)
+            Class.forName("com.mysql.cj.jdbc.Driver")
+            val connection: Connection = DriverManager.getConnection(urlBase, login, password)
 
             checkAndInsertRecord(connection, userID, userName, firstName)
 
@@ -32,8 +27,6 @@ class DataBaseUsers {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-
 
     }
 
@@ -62,7 +55,11 @@ class DataBaseUsers {
                 insertStatement.setString(3, firstName?: "None")
                 insertStatement.executeUpdate()
             }
+
         }
+
+
+
     }
 
 }

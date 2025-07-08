@@ -75,20 +75,35 @@ class SunnyBot(
     @Value("\${telegram.token}")
     val token: String = "",
 
-    @Value("\${telegram.name")
+    @Value("\${telegram.name}")
     val botName: String = "",
+
+    @Value("\${telegram.url}")
+    val url: String = "",
+
+    @Value("\${telegram.login}")
+    val login: String = "",
+
+    @Value("\${telegram.password}")
+    val password: String = "root",
+
+    @Value("\${telegram.tableName}")
+    val tableName: String = "sunny_bot_users",
+
+    @Value("\${telegram.columnName}")
+    val columnName: String = "chat_id",
+
 ) : TelegramLongPollingBot(token) {
 
     override fun getBotUsername(): String? = botName
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onUpdateReceived(update: Update) {
         CoroutineScope(Dispatchers.IO).launch {
             updateHandler(update)
         }
         CoroutineScope(Dispatchers.IO).launch {
-            val dataBaseUsers = DataBaseUsers()
-            dataBaseUsers.dataBaseHelper(update)
+            val dataBase = DataBaseUsers(url, login, password, tableName, columnName)
+            dataBase.dataBaseHelper(update)
         }
     }
 
