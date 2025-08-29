@@ -24,6 +24,7 @@ class DeviceMain {
 
 
             row1Button1.text = "ELM-327"
+
             row1Button1.callbackData = "ELM327_INFO"
             row2Button1.text = "Кабель NISSAN3LINE"
             row2Button1.callbackData = "NISSAN3LINE_INFO"
